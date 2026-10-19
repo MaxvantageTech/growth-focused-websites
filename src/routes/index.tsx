@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   PhoneCall, CalendarCheck, RefreshCcw, Zap, Workflow, Clock, PhoneMissed, Timer, Users,
-  Globe, Search, MousePointerClick, TrendingUp, ShieldCheck,
+  Globe, Search, MousePointerClick, TrendingUp, ShieldCheck, Check, AudioLines,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -29,16 +29,34 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-function CTA({ className }: { className?: string }) {
+function CTA({ className, invert = false }: { className?: string; invert?: boolean }) {
+  const label = (
+    <>
+      Book a Free Call
+      <CalendarCheck className="h-4 w-4" />
+    </>
+  );
+  if (invert) {
+    return (
+      <Button asChild size="xl" className={`bg-white text-primary shadow-none hover:bg-white/90 ${className ?? ""}`}>
+        <a href="#book">{label}</a>
+      </Button>
+    );
+  }
   return (
     <Button asChild variant="gold" size="xl" className={className}>
-      <a href="#book">Book a Free Call</a>
+      <a href="#book">{label}</a>
     </Button>
   );
 }
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">{children}</p>;
+  return (
+    <p className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
+      <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden />
+      {children}
+    </p>
+  );
 }
 
 function Header() {
@@ -58,12 +76,51 @@ function Header() {
       className={`fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur transition-transform duration-300 ${show ? "translate-y-0" : "-translate-y-full"}`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        <span className="font-display text-lg font-semibold text-primary">Maxvantage Tech</span>
+        <span className="flex items-center gap-2 text-lg font-extrabold text-primary">
+          <AudioLines className="h-5 w-5" aria-hidden />
+          Maxvantage Tech
+        </span>
         <Button asChild variant="gold" size="sm" className="h-10 px-4">
           <a href="#book">Book a Free Call</a>
         </Button>
       </div>
     </header>
+  );
+}
+
+const BARS = [30, 55, 80, 60, 90, 45, 70, 100, 50, 65, 85, 40, 60, 75, 35, 55, 90, 45, 70, 60, 30, 50, 80, 40, 60, 35, 70, 45, 55, 25];
+
+function VoiceCard() {
+  return (
+    <div className="rounded-2xl border bg-card p-6 shadow-soft">
+      <div className="flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-foreground">
+        <span className="h-2 w-2 rounded-full bg-primary" aria-hidden />
+        Your agency. Always available.
+      </div>
+      <div className="mt-4 rounded-xl border p-4">
+        <div className="flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
+            <AudioLines className="h-5 w-5" aria-hidden />
+          </span>
+          <div>
+            <p className="font-semibold leading-snug">“Can I book a valuation this week?”</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">AI voice assistant · Example enquiry</p>
+          </div>
+        </div>
+        <div className="mt-4 flex h-10 items-center gap-1" aria-hidden>
+          {BARS.map((h, i) => (
+            <span key={i} className="w-1 rounded-full bg-primary" style={{ height: `${h}%`, opacity: h > 80 ? 1 : 0.75 }} />
+          ))}
+        </div>
+        <div className="mt-4 flex items-center justify-between border-t pt-4 text-sm">
+          <span className="flex items-center gap-2 font-medium text-primary">
+            <CalendarCheck className="h-4 w-4" aria-hidden /> Valuation booked
+          </span>
+          <span className="text-muted-foreground">Added to your calendar</span>
+        </div>
+      </div>
+      <p className="mt-4 text-xs text-muted-foreground">Fictional example · AI-generated voice</p>
+    </div>
   );
 }
 
@@ -83,28 +140,28 @@ function ROI() {
   return (
     <section className="px-5 py-24">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-center text-3xl font-semibold text-primary md:text-5xl">See Your Potential ROI</h2>
+        <h2 className="text-center text-3xl leading-tight md:text-5xl">See Your Potential ROI</h2>
         <div className="mt-12 grid gap-8 md:grid-cols-2">
           <div className="space-y-10 rounded-2xl border bg-card p-8 shadow-soft">
             {rows.map((x) => (
               <div key={x.label}>
                 <div className="mb-4 flex items-baseline justify-between gap-4">
                   <label className="text-sm font-medium text-foreground">{x.label}</label>
-                  <span className="font-display text-xl font-semibold text-primary">{x.f(x.v)}</span>
+                  <span className="text-xl font-bold text-primary">{x.f(x.v)}</span>
                 </div>
                 <Slider value={[x.v]} min={x.min} max={x.max} step={x.step} onValueChange={([n]) => x.set(n ?? x.v)} />
               </div>
             ))}
           </div>
-          <div className="flex flex-col justify-center rounded-2xl bg-navy p-8 text-navy-foreground shadow-soft md:p-12">
-            <p className="text-sm font-medium uppercase tracking-widest text-gold">Potential Extra Fee Income Per Month</p>
-            <p className="mt-4 font-display text-5xl font-semibold md:text-6xl">{fmt(r.revenue)}</p>
-            <ul className="mt-6 space-y-1 text-sm text-navy-foreground/80">
+          <div className="flex flex-col justify-center rounded-2xl bg-accent p-8 md:p-12">
+            <p className="text-sm font-semibold uppercase tracking-widest text-primary">Potential Extra Fee Income Per Month</p>
+            <p className="mt-4 text-5xl leading-none text-primary md:text-6xl">{fmt(r.revenue)}</p>
+            <ul className="mt-6 space-y-1 text-sm text-foreground/80">
               <li>{r.recovered} calls answered instead of missed a month</li>
               <li>{Math.round(r.appointments)} booked appointments (25%)</li>
               <li>{r.instructions.toFixed(1)} extra instructions won ({win}%)</li>
             </ul>
-            <p className="mt-6 text-xs leading-relaxed text-navy-foreground/60">
+            <p className="mt-6 text-xs leading-relaxed text-foreground/60">
               Calls per day × 30 days × 25% booked × your win rate × your average fee. An estimate, not a guarantee.
             </p>
           </div>
@@ -118,7 +175,7 @@ function Book() {
   return (
     <section id="book" className="scroll-mt-20 px-5 py-24">
       <div className="mx-auto max-w-5xl">
-        <h2 className="text-center text-3xl font-semibold text-primary md:text-5xl">Book a Free Call</h2>
+        <h2 className="text-center text-3xl leading-tight md:text-5xl">Book a Free Call</h2>
         <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">Pick a time that suits you. 15 minutes, no obligation.</p>
         <div className="mt-10 overflow-hidden rounded-2xl border bg-card shadow-soft">
           <iframe src={`${CAL}?embed=true&layout=month_view`} title="Book a free call" className="h-[720px] w-full" loading="lazy" />
@@ -134,28 +191,59 @@ function Index() {
       <Header />
 
       {/* Hero */}
-      <section className="bg-hero-glow px-5 pb-24 pt-36 md:pt-44">
-        <div className="mx-auto max-w-3xl animate-fade-up text-center">
-          <Eyebrow>For UK Estate Agency Owners</Eyebrow>
-          <h1 className="mt-5 text-4xl font-semibold leading-[1.05] text-primary md:text-7xl">
-            Never Miss a Valuation Enquiry Again
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Our AI Voice System answers 100% of your calls, qualifies leads, and books valuations and viewings 24/7, so your agents can focus on closing deals. Stop sending potential fees to voicemail.
-          </p>
-          <CTA className="mt-10" />
-          <p className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <ShieldCheck className="h-4 w-4 text-gold" /> Measurable increase in booked appointments within 60 days or the setup fee is refunded.
-          </p>
+      <section className="bg-hero-glow px-5 pb-20 pt-32 md:pt-40">
+        <div className="mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-2 animate-fade-up">
+          <div>
+            <Eyebrow>For UK Estate Agency Owners</Eyebrow>
+            <h1 className="mt-6 text-4xl leading-[1.08] md:text-6xl">
+              Never Miss a <span className="text-primary">Valuation Enquiry</span> Again
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Our AI Voice System answers 100% of your calls, qualifies leads, and books valuations and viewings 24/7, so your agents can focus on closing deals. Stop sending potential fees to voicemail.
+            </p>
+            <ul className="mt-8 space-y-3">
+              {[
+                "Capture new seller & buyer enquiries, 24/7",
+                "Book 25% more valuations and viewings",
+                "New web leads called back within 60 seconds",
+              ].map((t) => (
+                <li key={t} className="flex items-center gap-3">
+                  <Check className="h-5 w-5 shrink-0 text-primary" aria-hidden /> {t}
+                </li>
+              ))}
+            </ul>
+            <CTA className="mt-10" />
+            <p className="mt-4 flex max-w-md items-start gap-2 text-sm text-muted-foreground">
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden /> Measurable increase in booked appointments within 60 days or the setup fee is refunded.
+            </p>
+          </div>
+          <VoiceCard />
+        </div>
+      </section>
+
+      {/* Feature strip */}
+      <section className="bg-cream px-5 py-6">
+        <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-3 md:gap-8">
+          {[
+            { i: ShieldCheck, t: "Privacy-first, UK GDPR compliant" },
+            { i: Workflow, t: "Fits your CRM & calendar workflow" },
+            { i: AudioLines, t: "A natural, human-like voice" },
+          ].map(({ i: I, t }) => (
+            <div key={t} className="flex items-center justify-center gap-3 text-sm font-medium">
+              <I className="h-5 w-5 shrink-0 text-primary" aria-hidden /> {t}
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Pain */}
-      <section className="bg-cream px-5 py-24">
+      <section className="px-5 py-24">
         <div className="mx-auto max-w-6xl">
-          <div className="max-w-2xl">
+          <div className="max-w-3xl">
             <Eyebrow>The leak in your pipeline</Eyebrow>
-            <h2 className="mt-4 text-3xl font-semibold text-primary md:text-5xl">Every missed call is a fee your competitor banks.</h2>
+            <h2 className="mt-5 uppercase leading-[1.1] text-3xl md:text-5xl">
+              Every missed call is a fee your competitor banks.
+            </h2>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
@@ -164,8 +252,8 @@ function Index() {
               { i: Users, t: "Overloaded front desk", d: "Your front desk is overwhelmed during peak hours, juggling transfers and taking messages. High-value calls from potential clients slip through the cracks." },
             ].map(({ i: I, t, d }) => (
               <div key={t} className="rounded-2xl border bg-card p-7 shadow-soft">
-                <I className="h-6 w-6 text-destructive" />
-                <h3 className="mt-5 text-xl font-semibold text-primary">{t}</h3>
+                <I className="h-6 w-6 text-primary" />
+                <h3 className="mt-5 text-xl">{t}</h3>
                 <p className="mt-3 leading-relaxed text-muted-foreground">{d}</p>
               </div>
             ))}
@@ -174,9 +262,9 @@ function Index() {
       </section>
 
       {/* How it works */}
-      <section className="px-5 py-24">
+      <section className="bg-cream px-5 py-24">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mx-auto max-w-3xl text-center text-3xl font-semibold text-primary md:text-5xl">Capture and Convert Every Lead in 3 Steps</h2>
+          <h2 className="mx-auto max-w-3xl text-center text-3xl leading-tight md:text-5xl">Capture and Convert Every Lead in 3 Steps</h2>
           <div className="mt-14 grid gap-10 md:grid-cols-3">
             {[
               { i: PhoneCall, t: "24/7 Call & Lead Capture", d: "Our AI answers every call instantly, any time of day. It also calls your new web leads in under 60 seconds. No more missed opportunities." },
@@ -185,10 +273,10 @@ function Index() {
             ].map(({ i: I, t, d }, n) => (
               <div key={t}>
                 <div className="flex items-center gap-4">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-primary"><I className="h-5 w-5" /></span>
-                  <span className="font-display text-sm text-gold">Step {n + 1}</span>
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground"><I className="h-5 w-5" /></span>
+                  <span className="text-sm font-bold uppercase tracking-wider text-primary">Step {n + 1}</span>
                 </div>
-                <h3 className="mt-5 text-xl font-semibold text-primary">{t}</h3>
+                <h3 className="mt-5 text-xl">{t}</h3>
                 <p className="mt-3 leading-relaxed text-muted-foreground">{d}</p>
               </div>
             ))}
@@ -201,7 +289,7 @@ function Index() {
       {/* Included */}
       <section className="bg-cream px-5 py-24">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mx-auto max-w-3xl text-center text-3xl font-semibold text-primary md:text-5xl">Everything Your Real Estate Agency Needs to Automate Lead Capture</h2>
+          <h2 className="mx-auto max-w-3xl text-center text-3xl leading-tight md:text-5xl">Everything Your Real Estate Agency Needs to Automate Lead Capture</h2>
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {[
               { i: Zap, t: "Instant AI Call-Back", d: "Engage new web leads via phone call within seconds, before they can contact another agent." },
@@ -209,8 +297,8 @@ function Index() {
               { i: Clock, t: "24/7 Appointment Setting", d: "Fill your agents' calendars with qualified buyer viewings and vendor valuations, even while your office is closed." },
             ].map(({ i: I, t, d }) => (
               <div key={t} className="rounded-2xl border bg-card p-7 shadow-soft">
-                <I className="h-6 w-6 text-gold" />
-                <h3 className="mt-5 text-xl font-semibold text-primary">{t}</h3>
+                <I className="h-6 w-6 text-primary" />
+                <h3 className="mt-5 text-xl">{t}</h3>
                 <p className="mt-3 leading-relaxed text-muted-foreground">{d}</p>
               </div>
             ))}
@@ -223,7 +311,7 @@ function Index() {
         <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center">
           <div>
             <Eyebrow>Websites that book appointments</Eyebrow>
-            <h2 className="mt-4 text-3xl font-semibold text-primary md:text-5xl">Your website should win instructions. Not just look nice.</h2>
+            <h2 className="mt-5 leading-[1.1] text-3xl md:text-5xl">Your website should win instructions. <span className="text-primary">Not just look nice.</span></h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               Most real estate agency websites are online brochures. Sellers land, browse, and leave to request a valuation elsewhere. You paid for that traffic. Your competitor got the instruction.
             </p>
@@ -241,16 +329,16 @@ function Index() {
               <div key={t} className="flex gap-4 rounded-2xl border bg-card p-5 shadow-soft">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent text-primary"><I className="h-5 w-5" /></span>
                 <div>
-                  <h3 className="font-sans text-base font-semibold text-primary">{t}</h3>
+                  <h3 className="font-sans text-base font-bold">{t}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{d}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="mx-auto mt-20 max-w-6xl rounded-2xl bg-navy p-10 text-center text-navy-foreground md:p-14">
-          <Globe className="mx-auto h-7 w-7 text-gold" />
-          <h3 className="mt-4 text-2xl font-semibold md:text-4xl">Ready to capture every lead?</h3>
+        <div className="mx-auto mt-20 max-w-6xl rounded-2xl bg-accent p-10 text-center md:p-14">
+          <Globe className="mx-auto h-7 w-7 text-primary" />
+          <h3 className="mt-4 text-2xl md:text-4xl">Ready to capture every lead?</h3>
           <CTA className="mt-8" />
         </div>
       </section>
@@ -259,12 +347,12 @@ function Index() {
       <section className="bg-cream px-5 py-24">
         <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.9fr_1.1fr] md:items-center">
           <div className="relative">
-            <div className="absolute -inset-3 -z-0 rounded-3xl bg-gold/30" />
+            <div className="absolute -inset-3 -z-0 rounded-3xl bg-accent" />
             <img src={founder.url} alt="Kudrotey Khuda, founder of Maxvantage Tech" className="relative aspect-square w-full rounded-2xl object-cover shadow-soft" loading="lazy" />
           </div>
           <div>
             <Eyebrow>About Maxvantage Tech</Eyebrow>
-            <h2 className="mt-4 text-3xl font-semibold text-primary md:text-5xl">We grow real estate agencies. That's the whole job.</h2>
+            <h2 className="mt-5 leading-[1.1] text-3xl md:text-5xl">We grow real estate agencies. That's the whole job.</h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               I'm Kudrotey Khuda, founder of Maxvantage Tech. We're a growth partner for real estate agencies, not a freelancer you hand a task list to.
             </p>
@@ -274,7 +362,7 @@ function Index() {
             <div className="mt-8 grid grid-cols-3 gap-4 border-t pt-8">
               {[["25%", "more appointments"], ["60s", "speed-to-lead"], ["24/7", "every call answered"]].map(([n, l]) => (
                 <div key={l}>
-                  <p className="font-display text-3xl font-semibold text-primary">{n}</p>
+                  <p className="text-3xl font-extrabold text-primary">{n}</p>
                   <p className="mt-1 text-sm text-muted-foreground">{l}</p>
                 </div>
               ))}
@@ -286,7 +374,7 @@ function Index() {
       {/* FAQ */}
       <section className="px-5 py-24">
         <div className="mx-auto max-w-3xl">
-          <h2 className="text-center text-3xl font-semibold text-primary md:text-5xl">Your Questions, Answered</h2>
+          <h2 className="text-center text-3xl leading-tight md:text-5xl">Your Questions, Answered</h2>
           <Accordion type="single" collapsible className="mt-12">
             {[
               ["Will this sound like a cheap robocall to my clients?", "No. We use the most advanced conversational AI with a natural, human-like voice. It's designed to provide a professional and helpful first impression that reflects the quality of your agency."],
@@ -296,7 +384,7 @@ function Index() {
               ["Is this meant to replace my front desk staff or agents?", "Not at all. It's a tool to make them more effective. It handles the repetitive, time-consuming task of lead capture and qualification, freeing up your skilled agents and staff to focus on high-value activities like negotiations, client relationships, and closing deals."],
             ].map(([q, a], i) => (
               <AccordionItem key={q} value={`q${i}`}>
-                <AccordionTrigger className="text-left text-base font-semibold text-primary">{q}</AccordionTrigger>
+                <AccordionTrigger className="text-left text-base font-semibold">{q}</AccordionTrigger>
                 <AccordionContent className="text-base leading-relaxed text-muted-foreground">{a}</AccordionContent>
               </AccordionItem>
             ))}
@@ -305,13 +393,13 @@ function Index() {
       </section>
 
       {/* Final CTA */}
-      <section className="bg-navy px-5 py-24 text-navy-foreground">
+      <section className="bg-primary px-5 py-24 text-primary-foreground">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-semibold md:text-5xl">Stop Losing Fees to Your Voicemail</h2>
-          <p className="mt-6 text-lg leading-relaxed text-navy-foreground/75">
+          <h2 className="text-3xl leading-tight md:text-5xl">Stop Losing Fees to Your Voicemail</h2>
+          <p className="mt-6 text-lg leading-relaxed text-primary-foreground/85">
             Every day you wait is another day of missed calls and lost opportunities. Let's build a system that turns every phone call and web lead into a booked appointment for your agents. Book a free, no-obligation call to see exactly how this can work for your agency.
           </p>
-          <CTA className="mt-10" />
+          <CTA invert className="mt-10" />
         </div>
       </section>
 
