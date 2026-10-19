@@ -32,7 +32,7 @@ export const Route = createFileRoute("/")({
 function CTA({ className }: { className?: string }) {
   return (
     <Button asChild variant="gold" size="xl" className={className}>
-      <a href="#book">Book Your Free Assessment</a>
+      <a href="#book">Book a Free Call</a>
     </Button>
   );
 }
@@ -60,7 +60,7 @@ function Header() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <span className="font-display text-lg font-semibold text-primary">Maxvantage Tech</span>
         <Button asChild variant="gold" size="sm" className="h-10 px-4">
-          <a href="#book">Book Your Free Assessment</a>
+          <a href="#book">Book a Free Call</a>
         </Button>
       </div>
     </header>
@@ -118,10 +118,10 @@ function Book() {
   return (
     <section id="book" className="scroll-mt-20 px-5 py-24">
       <div className="mx-auto max-w-5xl">
-        <h2 className="text-center text-3xl font-semibold text-primary md:text-5xl">Book Your Free Assessment</h2>
+        <h2 className="text-center text-3xl font-semibold text-primary md:text-5xl">Book a Free Call</h2>
         <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">Pick a time that suits you. 15 minutes, no obligation.</p>
         <div className="mt-10 overflow-hidden rounded-2xl border bg-card shadow-soft">
-          <iframe src={`${CAL}?embed=true&layout=month_view`} title="Book a free assessment" className="h-[720px] w-full" loading="lazy" />
+          <iframe src={`${CAL}?embed=true&layout=month_view`} title="Book a free call" className="h-[720px] w-full" loading="lazy" />
         </div>
       </div>
     </section>
@@ -309,7 +309,7 @@ function Index() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-semibold md:text-5xl">Stop Losing Fees to Your Voicemail</h2>
           <p className="mt-6 text-lg leading-relaxed text-navy-foreground/75">
-            Every day you wait is another day of missed calls and lost opportunities. Let's build a system that turns every phone call and web lead into a booked appointment for your agents. Book a free, no-obligation assessment to see exactly how this can work for your agency.
+            Every day you wait is another day of missed calls and lost opportunities. Let's build a system that turns every phone call and web lead into a booked appointment for your agents. Book a free, no-obligation call to see exactly how this can work for your agency.
           </p>
           <CTA className="mt-10" />
         </div>
