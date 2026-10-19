@@ -91,7 +91,7 @@ function ROI() {
                   <label className="text-sm font-medium text-foreground">{r.label}</label>
                   <span className="font-display text-xl font-semibold text-primary">{r.f(r.v)}</span>
                 </div>
-                <Slider value={[r.v]} min={r.min} max={r.max} step={r.step} onValueChange={([x]) => r.set(x)} />
+                <Slider value={[r.v]} min={r.min} max={r.max} step={r.step} onValueChange={([x]) => r.set(x ?? r.v)} />
               </div>
             ))}
           </div>
