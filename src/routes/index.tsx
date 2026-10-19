@@ -309,7 +309,7 @@ function Index() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-semibold md:text-5xl">Stop Losing Fees to Your Voicemail</h2>
           <p className="mt-6 text-lg leading-relaxed text-navy-foreground/75">
-            Every day you wait is another day of missed calls and lost opportunities. Let's build a system that turns every phone call and web lead into a booked appointment for your agents. Book a free, no-obligation assessment to see exactly how this can work for your agency.
+            Every day you wait is another day of missed calls and lost opportunities. Let's build a system that turns every phone call and web lead into a booked appointment for your agents. Book a free, no-obligation call to see exactly how this can work for your agency.
           </p>
           <CTA className="mt-10" />
         </div>
