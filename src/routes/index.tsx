@@ -60,21 +60,8 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 
 function Header() {
-  const [show, setShow] = useState(true);
-  useEffect(() => {
-    let last = window.scrollY;
-    const on = () => {
-      const y = window.scrollY;
-      setShow(y < 80 || y < last);
-      last = y;
-    };
-    window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
-  }, []);
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur transition-transform duration-300 ${show ? "translate-y-0" : "-translate-y-full"}`}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <span className="flex items-center gap-2 text-lg font-extrabold text-primary">
           <AudioLines className="h-5 w-5" aria-hidden />
