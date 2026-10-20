@@ -88,42 +88,6 @@ function Header() {
   );
 }
 
-const BARS = [30, 55, 80, 60, 90, 45, 70, 100, 50, 65, 85, 40, 60, 75, 35, 55, 90, 45, 70, 60, 30, 50, 80, 40, 60, 35, 70, 45, 55, 25];
-
-function VoiceCard() {
-  return (
-    <div className="rounded-2xl border bg-card p-6 shadow-soft">
-      <div className="flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-foreground">
-        <span className="h-2 w-2 rounded-full bg-primary" aria-hidden />
-        Your agency. Always available.
-      </div>
-      <div className="mt-4 rounded-xl border p-4">
-        <div className="flex items-start gap-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
-            <AudioLines className="h-5 w-5" aria-hidden />
-          </span>
-          <div>
-            <p className="font-semibold leading-snug">“Can I book a valuation this week?”</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">AI voice assistant · Example enquiry</p>
-          </div>
-        </div>
-        <div className="mt-4 flex h-10 items-center gap-1" aria-hidden>
-          {BARS.map((h, i) => (
-            <span key={i} className="w-1 rounded-full bg-primary" style={{ height: `${h}%`, opacity: h > 80 ? 1 : 0.75 }} />
-          ))}
-        </div>
-        <div className="mt-4 flex items-center justify-between border-t pt-4 text-sm">
-          <span className="flex items-center gap-2 font-medium text-primary">
-            <CalendarCheck className="h-4 w-4" aria-hidden /> Valuation booked
-          </span>
-          <span className="text-muted-foreground">Added to your calendar</span>
-        </div>
-      </div>
-      <p className="mt-4 text-xs text-muted-foreground">Fictional example · AI-generated voice</p>
-    </div>
-  );
-}
-
 const fmt = (n: number) =>
   new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(n);
 
@@ -178,7 +142,7 @@ function Book() {
         <h2 className="text-center text-3xl leading-tight md:text-5xl">Book a Free Call</h2>
         <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">Pick a time that suits you. 15 minutes, no obligation.</p>
         <div className="mt-10 overflow-hidden rounded-2xl border bg-card shadow-soft">
-          <iframe src={`${CAL}?embed=true&layout=month_view`} title="Book a free call" className="h-[720px] w-full" loading="lazy" />
+          <iframe src={`${CAL}?embed=true&layout=month_view&theme=light&brandColor=%232f74c0`} title="Book a free call" className="h-[720px] w-full bg-card" loading="lazy" />
         </div>
       </div>
     </section>
@@ -192,16 +156,15 @@ function Index() {
 
       {/* Hero */}
       <section className="bg-hero-glow px-5 pb-20 pt-32 md:pt-40">
-        <div className="mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-2 animate-fade-up">
-          <div>
+        <div className="mx-auto flex max-w-3xl flex-col items-center text-center animate-fade-up">
             <Eyebrow>For UK Estate Agency Owners</Eyebrow>
             <h1 className="mt-6 text-4xl leading-[1.08] md:text-6xl">
               Never Miss a <span className="text-primary">Valuation Enquiry</span> Again
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
               Our AI Voice System answers 100% of your calls, qualifies leads, and books valuations and viewings 24/7, so your agents can focus on closing deals. Stop sending potential fees to voicemail.
             </p>
-            <ul className="mt-8 space-y-3">
+            <ul className="mt-8 space-y-3 text-left">
               {[
                 "Capture new seller & buyer enquiries, 24/7",
                 "Book 25% more valuations and viewings",
@@ -213,11 +176,9 @@ function Index() {
               ))}
             </ul>
             <CTA className="mt-10" />
-            <p className="mt-4 flex max-w-md items-start gap-2 text-sm text-muted-foreground">
+            <p className="mt-4 flex max-w-md items-start gap-2 text-left text-sm text-muted-foreground">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden /> Measurable increase in booked appointments within 60 days or the setup fee is refunded.
             </p>
-          </div>
-          <VoiceCard />
         </div>
       </section>
 
@@ -345,8 +306,8 @@ function Index() {
 
       {/* About */}
       <section className="bg-cream px-5 py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.9fr_1.1fr] md:items-center">
-          <div className="relative">
+        <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[auto_1fr] md:items-center">
+          <div className="relative mx-auto w-full max-w-[280px]">
             <div className="absolute -inset-3 -z-0 rounded-3xl bg-accent" />
             <img src={founder.url} alt="Kudrotey Khuda, founder of Maxvantage Tech" className="relative aspect-square w-full rounded-2xl object-cover shadow-soft" loading="lazy" />
           </div>
